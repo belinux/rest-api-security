@@ -13,7 +13,7 @@ public interface UserCrudService {
 
     User save(User user);
 
-    Optional<User> find(String id);
+    Optional<User> findbyToken(String token);
 
     Optional<User> findByUsername(String username);
 }
