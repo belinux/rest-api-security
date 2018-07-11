@@ -28,9 +28,12 @@ final class PublicUsersController {
     String register(
             @RequestParam("username") final String username,
             @RequestParam("password") final String password) {
+
+        if (users.findByUsername(username).isPresent())
+            throw new RuntimeException("username already on db: " + username);
+
         users.save(User
                 .builder()
-                .id(username)
                 .username(username)
                 .password(password)
                 .build()
@@ -40,9 +43,8 @@ final class PublicUsersController {
     }
 
     @PostMapping("/login")
-    String login(
-            @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
+    String login(@RequestParam("username") final String username,
+                 @RequestParam("password") final String password) {
         return authentication
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
